@@ -31,7 +31,7 @@ def get_table_schema(dataset_name):
 
 
 class SubmitFinalAnswer(BaseModel):
-    reasoning: str = Field(..., description="เหตุผลและกระบวนการคิด")
-    sql: str = Field(..., description="SQL statement ที่ใช้")
-    result: str = Field(..., description="ผลลัพธ์ตัวอย่าง")
+    # reasoning: str = Field(..., description="เหตุผลและกระบวนการคิด")
+    # sql: str = Field(..., description="SQL statement ที่ใช้")
+    # result: str = Field(..., description="ผลลัพธ์ตัวอย่าง")
     final_answer: str = Field(..., description="คำตอบสุดท้ายสำหรับผู้ใช้")

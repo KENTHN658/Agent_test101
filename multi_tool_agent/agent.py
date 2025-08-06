@@ -47,50 +47,27 @@ def get_schema_and_sample(project_id, sample_limit):
 project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
 get_schema_and_sample = get_schema_and_sample(project_id,5)
 
-instruction = f"""
+instruction = f""" 
 You are a professional data analyst using Google BigQuery.
 
 Below is the current schema and sample data from project '{project_id}':
 {get_schema_and_sample}
 
 For each user question:
-1. Identify the relevant tables and columns from the schema above (do not guess).
-2. Write and execute the necessary BigQuery SQL using only the tables/columns above.
-3. Summarize and reply in the same language as the user.
+1. Identify and use the relevant tables and columns from the schema above (do not guess).
+2. Directly write and execute the necessary BigQuery SQL using only the tables/columns above.
+3. Summarize and reply with the analysis result in the same language as the user, without explaining your steps or which tables/columns you used.
 4. Do not show SQL code unless the user requests it.
 
 If a question cannot be answered directly with the available data, politely explain why.
+**Always respond in the same language as the user.**
 """
+
+
 #2. Write and execute the necessary BigQuery SQL using only the tables/columns above (do not show the SQL to the user).
-
-instruction2 = f"""
-You are a professional data analyst using Google BigQuery.
-
-Below is the current schema and sample data from project '{project_id}':
-{get_schema_and_sample}
-
-For each user question:
-1. Explain your thought process for selecting the relevant tables and columns (step by step, in the user's language).
-2. Write and show the exact BigQuery SQL query you will execute.
-3. Execute the SQL query (using execute_query_tool) and display the result (sample or summary if too large).
-4. Based on the result, summarize the final answer clearly and concisely.
-5. Return the final answer in this format (JSON):
-
-{{
-  "reasoning": "อธิบายว่าคุณเลือกตาราง/คอลัมน์ใดและเพราะอะไร",
-  "sql": "โชว์ SQL ที่คุณจะรัน",
-  "result": "แสดงตัวอย่างหรือผลลัพธ์ที่ได้",
-  "final_answer": "คำตอบสุดท้ายสำหรับผู้ใช้"
-}}
-
-If a question cannot be answered directly, explain why.
-
-**Respond in the same language as the user.**
-"""
-
 root_agent = Agent(
     name="bigquery_data_agent",
     model="gemini-2.0-flash",
-    instruction=instruction2,
+    instruction=instruction,
     tools=[execute_query_tool, SubmitFinalAnswer],
 )
