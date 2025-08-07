@@ -67,7 +67,7 @@ If a question cannot be answered directly with the available data, politely expl
 #2. Write and execute the necessary BigQuery SQL using only the tables/columns above (do not show the SQL to the user).
 root_agent = Agent(
     name="bigquery_data_agent",
-    model="gemini-2.0-flash",
+    model= os.getenv("MODEL"),
     instruction=instruction,
     tools=[execute_query_tool, SubmitFinalAnswer],
 )
